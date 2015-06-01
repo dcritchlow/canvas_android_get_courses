@@ -1,4 +1,4 @@
-package com.darincritchlow.assignment7.cs3270a7;
+package com.darincritchlow.assignment7.cs3270a8;
 
 import android.app.Activity;
 import android.app.Fragment;

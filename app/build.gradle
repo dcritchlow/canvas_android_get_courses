@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.darincritchlow.assignment7.cs3270a7"
+        applicationId "com.darincritchlow.assignment8.cs3270a8"
         minSdkVersion 18
         targetSdkVersion 22
         versionCode 1

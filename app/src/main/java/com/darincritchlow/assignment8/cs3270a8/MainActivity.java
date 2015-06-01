@@ -1,4 +1,4 @@
-package com.darincritchlow.assignment7.cs3270a7;
+package com.darincritchlow.assignment8.cs3270a8;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -19,16 +19,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(com.darincritchlow.assignment8.cs3270a8.R.layout.activity_main);
 
         if(savedInstanceState != null){
             return;
         }
 
-        if (findViewById(R.id.fragmentContainer) != null){
+        if (findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer) != null){
             courseListFragment = CourseListFragment.newInstance();
             transaction = getFragmentManager().beginTransaction();
-            transaction.add(R.id.fragmentContainer, courseListFragment);
+            transaction.add(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer, courseListFragment);
             transaction.commit();
         }
     }
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == com.darincritchlow.assignment8.cs3270a8.R.id.action_settings) {
             return true;
         }
 
@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onCourseSelected(long rowID) {
-        if (findViewById(R.id.fragmentContainer) != null) { // phone
-            displayCourse(rowID, R.id.fragmentContainer);
+        if (findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer) != null) { // phone
+            displayCourse(rowID, com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer);
         }
     }
 
@@ -102,8 +102,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onEditCourse(Bundle arguments) {
-        if(findViewById(R.id.fragmentContainer) != null){
-            displayAddEditFragment(R.id.fragmentContainer, arguments);
+        if(findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer) != null){
+            displayAddEditFragment(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer, arguments);
         }
 //        else {
 //            displayAddEditFragment(R.id.rightPaneContainer, arguments); // Tablet layout
@@ -112,8 +112,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onAddCourse() {
-        if(findViewById(R.id.fragmentContainer) != null){
-            displayAddEditFragment(R.id.fragmentContainer, null);
+        if(findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer) != null){
+            displayAddEditFragment(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer, null);
         }
     }
 
