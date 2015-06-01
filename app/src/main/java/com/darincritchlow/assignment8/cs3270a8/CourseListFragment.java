@@ -106,6 +106,10 @@ public class CourseListFragment extends ListFragment {
             mListener.onAddCourse();
             return true;
         }
+        if(item.getItemId() == R.id.action_import){
+            new GetCanvasCourses().execute("");
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
