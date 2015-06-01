@@ -75,11 +75,11 @@ public class AddEditFragment extends Fragment {
 
         View addEditFragment = inflater.inflate(com.darincritchlow.assignment8.cs3270a8.R.layout.fragment_add_edit, container, false);
 
-        idEditText = (EditText) addEditFragment.findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.etId);
-        nameEditText = (EditText) addEditFragment.findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.etName);
-        courseCodeEditText = (EditText) addEditFragment.findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.etCourseCode);
-        startAtEditText = (EditText) addEditFragment.findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.etStartAt);
-        endAtEditText = (EditText) addEditFragment.findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.etEndAt);
+        idEditText = (EditText) addEditFragment.findViewById(R.id.etId);
+        nameEditText = (EditText) addEditFragment.findViewById(R.id.etName);
+        courseCodeEditText = (EditText) addEditFragment.findViewById(R.id.etCourseCode);
+        startAtEditText = (EditText) addEditFragment.findViewById(R.id.etStartAt);
+        endAtEditText = (EditText) addEditFragment.findViewById(R.id.etEndAt);
 
         courseInfoBundle = getArguments();
         if(courseInfoBundle != null){
@@ -90,7 +90,7 @@ public class AddEditFragment extends Fragment {
             startAtEditText.setText(courseInfoBundle.getString(COURSE_START));
             endAtEditText.setText(courseInfoBundle.getString(COURSE_END));
         }
-        Button saveContactButton = (Button) addEditFragment.findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.btnSaveContact);
+        Button saveContactButton = (Button) addEditFragment.findViewById(R.id.btnSaveContact);
         saveContactButton.setOnClickListener(saveContactButtonClicked);
 
         return addEditFragment;

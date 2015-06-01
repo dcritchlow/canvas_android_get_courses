@@ -6,17 +6,27 @@ import android.app.ListFragment;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.sql.SQLException;
+
+import javax.net.ssl.HttpsURLConnection;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.darincritchlow.assignment8.cs3270a8.CanvasObjects.*;
 
 
 /**
@@ -31,6 +41,7 @@ public class CourseListFragment extends ListFragment {
 
     private ListView courseListView;
     private CursorAdapter courseAdapter;
+    private ArrayAdapter<String> courseArrayAdapter;
     private String rowID;
 
     private CourseListFragmentListener mListener;
@@ -86,12 +97,12 @@ public class CourseListFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(com.darincritchlow.assignment8.cs3270a8.R.menu.fragment_course_list_menu, menu);
+        inflater.inflate(R.menu.fragment_course_list_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        if(item.getItemId() == com.darincritchlow.assignment8.cs3270a8.R.id.action_add){
+        if(item.getItemId() == R.id.action_add){
             mListener.onAddCourse();
             return true;
         }
@@ -158,5 +169,71 @@ public class CourseListFragment extends ListFragment {
             courseAdapter.changeCursor(result);
             databaseConnector.close();
         }
+    }
+
+    private class GetCanvasCourses extends AsyncTask<String, Integer, String>{
+
+        String AUTH_TOKEN = Authorization.AUTH_TOKEN;
+        String rawJson = "";
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            Log.d("test", "In AsyncTask GetCanvasCourses");
+
+            try {
+                URL url = new URL("https://weber.instructure.com/api/v1/courses");
+                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Authorization", "Bearer " + AUTH_TOKEN);
+                conn.connect();
+                int status = conn.getResponseCode();
+                if (status == 200 || status == 201){
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    rawJson = br.readLine();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return rawJson;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            super.onPostExecute(result);
+
+            DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
+
+            try{
+                Course[] courses = jsonParse(result);
+                for(Course course: courses){
+                    databaseConnector.insertCourse(course.id, course.name, course.course_code, course.start_at, course.end_at);
+                }
+            }
+            catch (Exception e){
+                Log.d("test", e.getMessage());
+            }
+
+        }
+    }
+
+    private Course[] jsonParse(String rawJson) {
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+
+        Course[] courses = null;
+
+        try{
+            courses = gson.fromJson(rawJson, Course[].class);
+            Log.d("test", "Number of courses returned is: " + courses.length);
+            Log.d("test", "First Course returned is: " + courses[0].id +
+                    courses[0].name + courses[0].course_code  + courses[0].start_at + courses[0].end_at);
+        }
+        catch (Exception e){
+            Log.d("test", e.getMessage());
+        }
+
+        return courses;
     }
 }

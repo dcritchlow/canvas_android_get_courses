@@ -88,14 +88,14 @@ public class DetailsFragment extends Fragment {
                 rowID = arguments.getLong(MainActivity.ROW_ID);
             }
         }
-        View detailsFragment = inflater.inflate(com.darincritchlow.assignment8.cs3270a8.R.layout.fragment_details, container, false);
+        View detailsFragment = inflater.inflate(R.layout.fragment_details, container, false);
         setHasOptionsMenu(true);
 
-        idTextView = (TextView) detailsFragment.findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.txvId);
-        nameTextView = (TextView) detailsFragment.findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.txvName);
-        courseCodeTextView = (TextView) detailsFragment.findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.txvCourseCode);
-        startAtTextView = (TextView) detailsFragment.findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.txvStartAt);
-        endAtTextView = (TextView) detailsFragment.findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.txvEndAt);
+        idTextView = (TextView) detailsFragment.findViewById(R.id.txvId);
+        nameTextView = (TextView) detailsFragment.findViewById(R.id.txvName);
+        courseCodeTextView = (TextView) detailsFragment.findViewById(R.id.txvCourseCode);
+        startAtTextView = (TextView) detailsFragment.findViewById(R.id.txvStartAt);
+        endAtTextView = (TextView) detailsFragment.findViewById(R.id.txvEndAt);
 
         return detailsFragment;
     }
@@ -115,12 +115,12 @@ public class DetailsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(com.darincritchlow.assignment8.cs3270a8.R.menu.fragment_details_menu, menu);
+        inflater.inflate(R.menu.fragment_details_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        if(item.getItemId() == com.darincritchlow.assignment8.cs3270a8.R.id.action_edit){
+        if(item.getItemId() == R.id.action_edit){
             Bundle arguments = new Bundle();
             arguments.putLong(MainActivity.ROW_ID, rowID);
             arguments.putCharSequence(ID, idTextView.getText());
@@ -131,7 +131,7 @@ public class DetailsFragment extends Fragment {
             mListener.onEditCourse(arguments);
             return true;
         }
-        if(item.getItemId() == com.darincritchlow.assignment8.cs3270a8.R.id.action_delete){
+        if(item.getItemId() == R.id.action_delete){
             deleteCourse();
             return true;
         }

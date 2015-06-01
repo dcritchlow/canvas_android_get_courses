@@ -3,6 +3,7 @@ package com.darincritchlow.assignment8.cs3270a8;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 
 
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.darincritchlow.assignment8.cs3270a8.R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
         if(savedInstanceState != null){
             return;
@@ -28,14 +29,13 @@ public class MainActivity extends AppCompatActivity
         if (findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer) != null){
             courseListFragment = CourseListFragment.newInstance();
             transaction = getFragmentManager().beginTransaction();
-            transaction.add(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer, courseListFragment);
+            transaction.add(R.id.fragmentContainer, courseListFragment);
             transaction.commit();
         }
     }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.menu_main, menu);
 //        return true;
 //    }
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == com.darincritchlow.assignment8.cs3270a8.R.id.action_settings) {
+        if (id == R.id.action_import) {
             return true;
         }
 
@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onCourseSelected(long rowID) {
-        if (findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer) != null) { // phone
-            displayCourse(rowID, com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer);
+        if (findViewById(R.id.fragmentContainer) != null) { // phone
+            displayCourse(rowID, R.id.fragmentContainer);
         }
     }
 
@@ -102,8 +102,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onEditCourse(Bundle arguments) {
-        if(findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer) != null){
-            displayAddEditFragment(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer, arguments);
+        if(findViewById(R.id.fragmentContainer) != null){
+            displayAddEditFragment(R.id.fragmentContainer, arguments);
         }
 //        else {
 //            displayAddEditFragment(R.id.rightPaneContainer, arguments); // Tablet layout
@@ -112,8 +112,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onAddCourse() {
-        if(findViewById(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer) != null){
-            displayAddEditFragment(com.darincritchlow.assignment8.cs3270a8.R.id.fragmentContainer, null);
+        if(findViewById(R.id.fragmentContainer) != null){
+            displayAddEditFragment(R.id.fragmentContainer, null);
         }
     }
 
