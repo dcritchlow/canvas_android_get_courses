@@ -1,0 +1,76 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.darincritchlow.assignment7.cs3270a7.AddEditFragment"
+    android:id="@+id/addEditScrollView">
+
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:useDefaultMargins="true">
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/id_hint"
+            android:inputType="number"
+            android:id="@+id/etId"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:imeOptions="actionNext"
+            style="@style/CourseLabelTextView"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name_hint"
+            android:inputType="textCapWords|textPersonName"
+            android:id="@+id/etName"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:imeOptions="actionNext"
+            style="@style/CourseLabelTextView"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/course_code_hint"
+            android:inputType="number"
+            android:id="@+id/etCourseCode"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:imeOptions="actionNext"
+            style="@style/CourseLabelTextView"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/start_at_hint"
+            android:id="@+id/etStartAt"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:imeOptions="actionNext"
+            android:inputType="datetime"
+            style="@style/CourseLabelTextView"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/end_at_hint"
+            android:inputType="datetime"
+            android:id="@+id/etEndAt"
+            android:layout_row="4"
+            android:layout_column="0"
+            android:imeOptions="actionDone"
+            style="@style/CourseLabelTextView"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_save_course"
+            android:id="@+id/btnSaveContact"
+            android:layout_row="5"
+            android:layout_column="0"
+            android:layout_gravity="center_horizontal" />
+    </GridLayout>
+</ScrollView>
