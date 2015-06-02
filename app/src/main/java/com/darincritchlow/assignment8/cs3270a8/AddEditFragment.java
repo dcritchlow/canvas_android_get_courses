@@ -149,6 +149,7 @@ public class AddEditFragment extends Fragment {
         }
         else {
             databaseConnector.updateCourse(
+                    rowID,
                     idEditText.getText().toString(),
                     nameEditText.getText().toString(),
                     courseCodeEditText.getText().toString(),

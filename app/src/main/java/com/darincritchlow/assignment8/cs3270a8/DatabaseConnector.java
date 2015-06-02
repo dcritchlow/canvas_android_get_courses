@@ -59,7 +59,7 @@ public class DatabaseConnector {
     }
 
     public void updateCourse(
-            String id, String name, String courseCode, String startAt, String endAt) throws SQLException{
+            long rowID, String id, String name, String courseCode, String startAt, String endAt) throws SQLException{
         ContentValues editCourse = new ContentValues();
         editCourse.put(ID, id);
         editCourse.put(NAME, name);
@@ -67,7 +67,7 @@ public class DatabaseConnector {
         editCourse.put(COURSE_START, startAt);
         editCourse.put(COURSE_END, endAt);
         open();
-        database.update(COURSES, editCourse, "_id=" + id, null);
+        database.update(COURSES, editCourse, "_id=" + rowID, null);
         close();
     }
 

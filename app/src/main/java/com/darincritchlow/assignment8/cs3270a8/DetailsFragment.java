@@ -53,7 +53,6 @@ public class DetailsFragment extends Fragment {
      * @param rowID long rowID.
      * @return A new instance of fragment DetailsFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static DetailsFragment newInstance(long rowID) {
         DetailsFragment fragment = new DetailsFragment();
         Bundle args = new Bundle();
