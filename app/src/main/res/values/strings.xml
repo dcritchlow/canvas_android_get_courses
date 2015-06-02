@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">CS3270A8</string>
-    <string name="action_import">Import</string>
     <string name="no_courses">No Courses</string>
     <string name="menuitem_add">Add</string>
     <string name="menuitem_edit">Edit</string>
@@ -23,4 +22,5 @@
     <string name="start_at_hint">Starting Date e.g. 8/1/2015</string>
     <string name="end_at_hint">Ending Date e.g. 12/20/2015</string>
     <string name="save_course">Save Course</string>
+    <string name="menuitem_import">Import</string>
 </resources>
