@@ -102,11 +102,12 @@ public class CourseListFragment extends ListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+        Log.d("test", "In onOptionsItemSelected");
         if(item.getItemId() == R.id.action_add){
             mListener.onAddCourse();
             return true;
         }
-        if(item.getItemId() == R.id.action_import){
+        else if (item.getItemId() == R.id.action_import){
             new GetCanvasCourses().execute("");
             return true;
         }
@@ -214,6 +215,7 @@ public class CourseListFragment extends ListFragment {
                 for(Course course: courses){
                     databaseConnector.insertCourse(course.id, course.name, course.course_code, course.start_at, course.end_at);
                 }
+                updateContactList();
             }
             catch (Exception e){
                 Log.d("test", e.getMessage());
