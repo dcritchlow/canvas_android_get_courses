@@ -36,4 +36,12 @@ public class CanvasObjects {
         protected String computed_current_score;
         protected String computed_final_grade;
     }
+
+    protected class Assignment{
+        protected String id;
+        protected String name;
+        protected String description;
+        protected String due_at;
+        protected String course_id;
+    }
 }

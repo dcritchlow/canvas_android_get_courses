@@ -19,7 +19,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-import com.darincritchlow.assignment9.cs3270a9.CanvasObjects.Course;
+import com.darincritchlow.assignment9.cs3270a9.CanvasObjects.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -46,6 +46,11 @@ public class CourseListFragment extends ListFragment {
     private ArrayAdapter<String> courseArrayAdapter;
     private String rowID;
     private String AUTH_TOKEN = Authorization.AUTH_TOKEN;
+    private static final String ID = "id";
+    private static final String NAME = "name";
+    private static final String COURSE_CODE = "course_code";
+    private static final String COURSE_START = "course_start";
+    private static final String COURSE_END = "course_end";
 
     private CourseListFragmentListener mListener;
 
@@ -101,7 +106,8 @@ public class CourseListFragment extends ListFragment {
     private AdapterView.OnItemLongClickListener viewAssignmentsListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(getActivity(), "Course id " + id + " was clicked", Toast.LENGTH_LONG).show();
+//            Toast.makeText(getActivity(), "Course id " + id + " was clicked", Toast.LENGTH_LONG).show();
+            new GetCourseID().execute(id);
             return true;
         }
     };
@@ -222,7 +228,7 @@ public class CourseListFragment extends ListFragment {
             DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
 
             try{
-                Course[] courses = jsonParse(result);
+                Course[] courses = jsonParseCourse(result);
                 for(Course course: courses){
                     databaseConnector.insertCourse(course.id, course.name, course.course_code, course.start_at, course.end_at);
                 }
@@ -235,7 +241,7 @@ public class CourseListFragment extends ListFragment {
         }
     }
 
-    private Course[] jsonParse(String rawJson) {
+    private Course[] jsonParseCourse(String rawJson) {
         GsonBuilder gsonb = new GsonBuilder();
         Gson gson = gsonb.create();
 
@@ -254,16 +260,92 @@ public class CourseListFragment extends ListFragment {
         return courses;
     }
 
+    private class GetCourseID extends AsyncTask<Long, Object, Cursor> {
+
+        DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
+
+        @Override
+        protected Cursor doInBackground(Long... params) {
+            try {
+                databaseConnector.open();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return databaseConnector.getOneCourse(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Cursor result){
+            super.onPostExecute(result);
+            result.moveToFirst();
+            int courseCodeIndex = result.getColumnIndex(ID);
+            String courseId = result.getString(courseCodeIndex);
+            result.close();
+            databaseConnector.close();
+            new GetCanvasAssignments().execute(courseId);
+        }
+    }
+
     private class GetCanvasAssignments extends AsyncTask<String, Integer, String>{
+        String rawJson = "";
 
         @Override
         protected String doInBackground(String... params) {
-            return null;
+            Log.d("test", "In AsyncTask GetCanvasAssignments");
+
+            try {
+                URL url = new URL("https://weber.instructure.com/api/v1/courses/"+params[0]+"/assignments");
+                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Authorization", "Bearer " + AUTH_TOKEN);
+                conn.connect();
+                int status = conn.getResponseCode();
+                if (status == 200 || status == 201){
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    rawJson = br.readLine();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return rawJson;
         }
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+
+//            DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
+
+            try{
+                Assignment[] assignments = jsonParseAssignment(result);
+                for(Assignment assignment: assignments){
+//                    databaseConnector.insertAssignment(assignment.id, assignment.name, assignment.description, assignment.due_at);
+                    Log.d("test", assignment.name + assignment.due_at);
+                }
+            }
+            catch (Exception e){
+                Log.d("test", e.getMessage());
+            }
         }
+    }
+
+    private Assignment[] jsonParseAssignment(String rawJson) {
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+
+        Assignment[] assignments = null;
+
+        try{
+            assignments = gson.fromJson(rawJson, Assignment[].class);
+            Log.d("test", "Number of assignments returned is: " + assignments.length);
+            Log.d("test", "First Assignment returned is: " + assignments[0].id +
+                    assignments[0].name + assignments[0].description  + assignments[0].due_at);
+        }
+        catch (Exception e){
+            Log.d("test", e.getMessage());
+        }
+
+        return assignments;
     }
 }
