@@ -1,4 +1,4 @@
-package com.darincritchlow.assignment8.cs3270a8;
+package com.darincritchlow.assignment9.cs3270a9;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -26,7 +26,7 @@ import java.sql.SQLException;
 import javax.net.ssl.HttpsURLConnection;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.darincritchlow.assignment8.cs3270a8.CanvasObjects.*;
+import com.darincritchlow.assignment9.cs3270a9.CanvasObjects.*;
 
 
 /**
@@ -73,7 +73,7 @@ public class CourseListFragment extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        setEmptyText(getResources().getString(com.darincritchlow.assignment8.cs3270a8.R.string.no_courses));
+        setEmptyText(getResources().getString(com.darincritchlow.assignment9.cs3270a9.R.string.no_courses));
         courseListView = getListView();
         courseListView.setOnItemClickListener(viewCourseListener);
         courseListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);

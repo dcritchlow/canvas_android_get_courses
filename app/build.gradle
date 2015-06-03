@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.darincritchlow.assignment8.cs3270a8"
+        applicationId "com.darincritchlow.assignment9.cs3270a9"
         minSdkVersion 18
         targetSdkVersion 22
         versionCode 1
@@ -22,5 +22,5 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.1.1'
-    compile files('C:/Dev/temp/CS3270A8/gson-2.3.1.jar')
+    compile files('/Users/dcritchlow/AndroidStudioProjects/gson-2.3.1.jar')
 }

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.darincritchlow.assignment8.cs3270a8.DetailsFragment"
+    tools:context="com.darincritchlow.assignment9.cs3270a9.DetailsFragment"
     android:id="@+id/detailsScrollView">
 
     <GridLayout

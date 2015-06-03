@@ -1,4 +1,4 @@
-package com.darincritchlow.assignment8.cs3270a8;
+package com.darincritchlow.assignment9.cs3270a9;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -145,9 +145,9 @@ public class DetailsFragment extends Fragment {
         @Override
         public Dialog onCreateDialog(Bundle bundle){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(com.darincritchlow.assignment8.cs3270a8.R.string.confirm_title);
-            builder.setMessage(com.darincritchlow.assignment8.cs3270a8.R.string.confirm_message);
-            builder.setPositiveButton(com.darincritchlow.assignment8.cs3270a8.R.string.button_delete, new DialogInterface.OnClickListener() {
+            builder.setTitle(com.darincritchlow.assignment9.cs3270a9.R.string.confirm_title);
+            builder.setMessage(com.darincritchlow.assignment9.cs3270a9.R.string.confirm_message);
+            builder.setPositiveButton(com.darincritchlow.assignment9.cs3270a9.R.string.button_delete, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     final DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
@@ -170,7 +170,7 @@ public class DetailsFragment extends Fragment {
                     deleteTask.execute(new Long[]{rowID});
                 }
             });
-            builder.setNegativeButton(com.darincritchlow.assignment8.cs3270a8.R.string.button_cancel, null);
+            builder.setNegativeButton(com.darincritchlow.assignment9.cs3270a9.R.string.button_cancel, null);
             return builder.create();
         }
     };

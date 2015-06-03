@@ -1,4 +1,4 @@
-package com.darincritchlow.assignment8.cs3270a8;
+package com.darincritchlow.assignment9.cs3270a9;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -73,7 +73,7 @@ public class AddEditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View addEditFragment = inflater.inflate(com.darincritchlow.assignment8.cs3270a8.R.layout.fragment_add_edit, container, false);
+        View addEditFragment = inflater.inflate(com.darincritchlow.assignment9.cs3270a9.R.layout.fragment_add_edit, container, false);
 
         idEditText = (EditText) addEditFragment.findViewById(R.id.etId);
         nameEditText = (EditText) addEditFragment.findViewById(R.id.etName);
@@ -126,8 +126,8 @@ public class AddEditFragment extends Fragment {
                     @Override
                     public Dialog onCreateDialog(Bundle savedInstanceState){
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage(com.darincritchlow.assignment8.cs3270a8.R.string.error_message);
-                        builder.setPositiveButton(com.darincritchlow.assignment8.cs3270a8.R.string.ok, null);
+                        builder.setMessage(com.darincritchlow.assignment9.cs3270a9.R.string.error_message);
+                        builder.setPositiveButton(com.darincritchlow.assignment9.cs3270a9.R.string.ok, null);
                         return builder.create();
                     }
                 };
