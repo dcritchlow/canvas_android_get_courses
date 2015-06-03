@@ -17,6 +17,11 @@ import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
+
+import com.darincritchlow.assignment9.cs3270a9.CanvasObjects.Course;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -24,9 +29,6 @@ import java.net.URL;
 import java.sql.SQLException;
 
 import javax.net.ssl.HttpsURLConnection;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.darincritchlow.assignment9.cs3270a9.CanvasObjects.*;
 
 
 /**
@@ -43,6 +45,7 @@ public class CourseListFragment extends ListFragment {
     private CursorAdapter courseAdapter;
     private ArrayAdapter<String> courseArrayAdapter;
     private String rowID;
+    private String AUTH_TOKEN = Authorization.AUTH_TOKEN;
 
     private CourseListFragmentListener mListener;
 
@@ -77,6 +80,7 @@ public class CourseListFragment extends ListFragment {
         courseListView = getListView();
         courseListView.setOnItemClickListener(viewCourseListener);
         courseListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        courseListView.setOnItemLongClickListener(viewAssignmentsListener);
         String[] from = new String[] {"name"};
         int[] to = new int[] {android.R.id.text1};
         courseAdapter = new SimpleCursorAdapter(getActivity(),
@@ -91,6 +95,14 @@ public class CourseListFragment extends ListFragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             mListener.onCourseSelected(id);
+        }
+    };
+
+    private AdapterView.OnItemLongClickListener viewAssignmentsListener = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            Toast.makeText(getActivity(), "Course id " + id + " was clicked", Toast.LENGTH_LONG).show();
+            return true;
         }
     };
 
@@ -178,7 +190,6 @@ public class CourseListFragment extends ListFragment {
 
     private class GetCanvasCourses extends AsyncTask<String, Integer, String>{
 
-        String AUTH_TOKEN = Authorization.AUTH_TOKEN;
         String rawJson = "";
 
         @Override
@@ -241,5 +252,18 @@ public class CourseListFragment extends ListFragment {
         }
 
         return courses;
+    }
+
+    private class GetCanvasAssignments extends AsyncTask<String, Integer, String>{
+
+        @Override
+        protected String doInBackground(String... params) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+        }
     }
 }
