@@ -20,6 +20,7 @@ public class DatabaseConnector {
     private static final String COURSE_START = "course_start";
     private static final String COURSE_END = "course_end";
     private static final String COURSES = "courses";
+    private static final String DB_ID = "_id=";
 
     private SQLiteDatabase database;
     private DatabaseOpenHelper databaseOpenHelper;
@@ -67,18 +68,18 @@ public class DatabaseConnector {
         editCourse.put(COURSE_START, startAt);
         editCourse.put(COURSE_END, endAt);
         open();
-        database.update(COURSES, editCourse, "_id=" + rowID, null);
+        database.update(COURSES, editCourse, DB_ID + rowID, null);
         close();
     }
 
     public Cursor getOneCourse(Long id) {
         return database.query(
-            COURSES, null, "_id=" + id, null, null, null, null);
+            COURSES, null, DB_ID + id, null, null, null, null);
     }
 
     public void deleteCourse(Long id) throws SQLException {
         open();
-        database.delete(COURSES, "_id=" + id, null);
+        database.delete(COURSES, DB_ID + id, null);
         close();
     }
 
