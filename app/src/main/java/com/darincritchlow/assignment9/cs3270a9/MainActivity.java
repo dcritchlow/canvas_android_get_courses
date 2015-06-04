@@ -117,6 +117,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onListLongClick(long rowID) {
+        AssignmentListFragment assignmentListFragment = new AssignmentListFragment().newInstance(rowID);
+        assignmentListFragment.showAssignments(rowID);
+    }
+
+    @Override
     public void onResume(){
         super.onResume();
 

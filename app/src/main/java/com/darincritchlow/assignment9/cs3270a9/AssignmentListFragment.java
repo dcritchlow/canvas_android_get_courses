@@ -1,0 +1,228 @@
+package com.darincritchlow.assignment9.cs3270a9;
+
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.ListFragment;
+import android.database.Cursor;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.CursorAdapter;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+
+import com.darincritchlow.assignment9.cs3270a9.CanvasObjects.Assignment;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.sql.SQLException;
+
+import javax.net.ssl.HttpsURLConnection;
+
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link AssignmentListFragment} interface
+ * to handle interaction events.
+ * Use the {@link AssignmentListFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class AssignmentListFragment extends ListFragment {
+
+    private AssignmentListFragmentListener mListener;
+    private ListView assignmentListView;
+    private CursorAdapter assignmentAdapter;
+    private long rowID = -1;
+    private String AUTH_TOKEN = Authorization.AUTH_TOKEN;
+    private static final String ID = "id";
+
+
+    public AssignmentListFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment with the parameters.
+     *
+     * @param rowID long rowID.
+     *
+     * @return A new instance of fragment AssignmentListFragment.
+     */
+    public static AssignmentListFragment newInstance(long rowID) {
+        AssignmentListFragment fragment = new AssignmentListFragment();
+        Bundle args = new Bundle();
+        args.putLong(MainActivity.ROW_ID, rowID);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            rowID = getArguments().getLong(MainActivity.ROW_ID);
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+        setRetainInstance(true);
+        setHasOptionsMenu(true);
+        setEmptyText(getResources().getString(R.string.no_assignments));
+        assignmentListView = getListView();
+        assignmentListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        String[] from = new String[] {"name", "due_at"};
+        int[] to = new int[] {android.R.id.text1};
+        assignmentAdapter = new SimpleCursorAdapter(getActivity(),
+                android.R.layout.simple_list_item_1, null, from, to, 0);
+        setListAdapter(assignmentAdapter);
+    }
+
+
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        return inflater.inflate(R.layout.fragment_assignment_list, container, false);
+//    }
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (AssignmentListFragmentListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement CourseListFragmentListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+//        new GetCoursesTask().execute((Object[]) null);
+    }
+
+    @Override
+    public void onStop(){
+        Cursor cursor = assignmentAdapter.getCursor();
+        assignmentAdapter.changeCursor(null);
+        if(cursor != null){
+            cursor.close();
+        }
+        super.onStop();
+    }
+
+    public void showAssignments(long rowID) {
+        new GetCourseID().execute(rowID);
+    }
+
+    public interface AssignmentListFragmentListener {
+
+    }
+
+    private class GetCourseID extends AsyncTask<Long, Object, Cursor> {
+
+        DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
+
+        @Override
+        protected Cursor doInBackground(Long... params) {
+            try {
+                databaseConnector.open();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return databaseConnector.getOneCourse(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Cursor result){
+            super.onPostExecute(result);
+            result.moveToFirst();
+            int courseCodeIndex = result.getColumnIndex(ID);
+            String courseId = result.getString(courseCodeIndex);
+            result.close();
+            databaseConnector.close();
+            new GetCanvasAssignments().execute(courseId);
+        }
+    }
+
+    private class GetCanvasAssignments extends AsyncTask<String, Integer, String> {
+        String rawJson = "";
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.d("test", "In AsyncTask GetCanvasAssignments");
+
+            try {
+                URL url = new URL("https://weber.instructure.com/api/v1/courses/"+params[0]+"/assignments");
+                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Authorization", "Bearer " + AUTH_TOKEN);
+                conn.connect();
+                int status = conn.getResponseCode();
+                if (status == 200 || status == 201){
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    rawJson = br.readLine();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return rawJson;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+//            DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
+
+            try{
+                Assignment[] assignments = jsonParseAssignment(result);
+                for(Assignment assignment: assignments){
+//                    databaseConnector.insertAssignment(assignment.id, assignment.name, assignment.description, assignment.due_at);
+                    Log.d("test", assignment.name + assignment.due_at);
+                }
+            }
+            catch (Exception e){
+                Log.d("test", e.getMessage());
+            }
+        }
+    }
+
+    private Assignment[] jsonParseAssignment(String rawJson) {
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+
+        Assignment[] assignments = null;
+
+        try{
+            assignments = gson.fromJson(rawJson, Assignment[].class);
+            Log.d("test", "Number of assignments returned is: " + assignments.length);
+            Log.d("test", "First Assignment returned is: " + assignments[0].id +
+                    assignments[0].name + assignments[0].description  + assignments[0].due_at);
+        }
+        catch (Exception e){
+            Log.d("test", e.getMessage());
+        }
+
+        return assignments;
+    }
+
+}
