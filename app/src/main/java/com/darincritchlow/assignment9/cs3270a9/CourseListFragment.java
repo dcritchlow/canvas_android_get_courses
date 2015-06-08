@@ -66,6 +66,7 @@ public class CourseListFragment extends ListFragment {
         if (getArguments() != null) {
             rowID = getArguments().getString(MainActivity.ROW_ID);
         }
+        setRetainInstance(true);
     }
 
     @Override

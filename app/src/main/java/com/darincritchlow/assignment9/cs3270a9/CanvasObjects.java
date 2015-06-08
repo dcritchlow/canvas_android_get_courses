@@ -43,5 +43,10 @@ public class CanvasObjects {
         protected String description;
         protected String due_at;
         protected String course_id;
+
+        protected Assignment(String name, String due_at){
+            this.name = name;
+            this.due_at = due_at;
+        }
     }
 }

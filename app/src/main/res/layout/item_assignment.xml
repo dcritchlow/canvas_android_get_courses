@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <TextView
+        android:id="@+id/txvAssignmentName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:padding="10dp"/>
+    <TextView
+        android:id="@+id/txvDueDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Due Date"
+        android:layout_below="@+id/txvAssignmentName"
+        android:layout_toEndOf="@+id/txvDueDateLabel" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/due"
+        android:id="@+id/txvDueDateLabel"
+        android:layout_alignTop="@+id/txvDueDate"
+        android:layout_alignParentStart="true"
+        android:textColor="#FF0000"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+</RelativeLayout>

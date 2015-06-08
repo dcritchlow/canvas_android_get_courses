@@ -9,9 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.CursorAdapter;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.ArrayAdapter;
 
 import com.darincritchlow.assignment9.cs3270a9.CanvasObjects.Assignment;
 import com.google.gson.Gson;
@@ -21,6 +19,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -36,11 +36,12 @@ import javax.net.ssl.HttpsURLConnection;
 public class AssignmentListFragment extends ListFragment {
 
     private AssignmentListFragmentListener mListener;
-    private ListView assignmentListView;
-    private CursorAdapter assignmentAdapter;
+    private ArrayAdapter<Assignment> assignmentAdapter;
     private long rowID = -1;
     private String AUTH_TOKEN = Authorization.AUTH_TOKEN;
     private static final String ID = "id";
+    Assignment[] assignments = {};
+    private List<Assignment> assignmentItems;
 
 
     public AssignmentListFragment() {
@@ -74,26 +75,8 @@ public class AssignmentListFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-        setRetainInstance(true);
-        setHasOptionsMenu(true);
-        setEmptyText(getResources().getString(R.string.no_assignments));
-        assignmentListView = getListView();
-        assignmentListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        String[] from = new String[] {"name", "due_at"};
-        int[] to = new int[] {android.R.id.text1};
-        assignmentAdapter = new SimpleCursorAdapter(getActivity(),
-                android.R.layout.simple_list_item_1, null, from, to, 0);
-        setListAdapter(assignmentAdapter);
+        getListView().setDivider(null);
     }
-
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_assignment_list, container, false);
-//    }
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -115,17 +98,7 @@ public class AssignmentListFragment extends ListFragment {
     @Override
     public void onResume(){
         super.onResume();
-//        new GetCoursesTask().execute((Object[]) null);
-    }
-
-    @Override
-    public void onStop(){
-        Cursor cursor = assignmentAdapter.getCursor();
-        assignmentAdapter.changeCursor(null);
-        if(cursor != null){
-            cursor.close();
-        }
-        super.onStop();
+        showAssignments(rowID);
     }
 
     public void showAssignments(long rowID) {
@@ -133,7 +106,7 @@ public class AssignmentListFragment extends ListFragment {
     }
 
     public interface AssignmentListFragmentListener {
-
+        public void showAssignments(long rowID, int viewID);
     }
 
     private class GetCourseID extends AsyncTask<Long, Object, Cursor> {
@@ -190,15 +163,16 @@ public class AssignmentListFragment extends ListFragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-
-//            DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
+            assignmentItems = new ArrayList<>();
 
             try{
-                Assignment[] assignments = jsonParseAssignment(result);
-                for(Assignment assignment: assignments){
-//                    databaseConnector.insertAssignment(assignment.id, assignment.name, assignment.description, assignment.due_at);
-                    Log.d("test", assignment.name + assignment.due_at);
+                assignments = jsonParseAssignment(result);
+                for(Assignment a: assignments){
+                    assignmentItems.add(a);
+                    Log.d("test", a.name + a.due_at);
                 }
+                assignmentAdapter = new AssignmentAdapter(getActivity(), assignmentItems);
+                setListAdapter(assignmentAdapter);
             }
             catch (Exception e){
                 Log.d("test", e.getMessage());
