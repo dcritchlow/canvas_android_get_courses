@@ -30,7 +30,6 @@ import java.sql.SQLException;
  */
 public class DetailsFragment extends Fragment {
 
-//    private static final String ROW_ID = "row_id";
     private static final String ID = "id";
     private static final String NAME = "name";
     private static final String COURSE_CODE = "course_code";

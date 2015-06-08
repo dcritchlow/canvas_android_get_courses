@@ -25,6 +25,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -99,7 +103,6 @@ public class CourseListFragment extends ListFragment {
     private AdapterView.OnItemLongClickListener viewAssignmentsListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//            Toast.makeText(getActivity(), "Course id " + id + " was clicked", Toast.LENGTH_LONG).show();
             mListener.onListLongClick(id);
             return true;
         }
@@ -224,7 +227,19 @@ public class CourseListFragment extends ListFragment {
             try{
                 Course[] courses = jsonParseCourse(result);
                 for(Course course: courses){
-                    databaseConnector.insertCourse(course.id, course.name, course.course_code, course.start_at, course.end_at);
+                    String startAt = "";
+                    String endAt = "";
+                    try {
+                        SimpleDateFormat source = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+                        Date startParsed = source.parse(course.start_at);
+                        Date endParsed = source.parse(course.end_at);
+                        SimpleDateFormat dest = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+                        startAt = dest.format(startParsed);
+                        endAt = dest.format(endParsed);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    databaseConnector.insertCourse(course.id, course.name, course.course_code, startAt, endAt);
                 }
                 updateContactList();
             }

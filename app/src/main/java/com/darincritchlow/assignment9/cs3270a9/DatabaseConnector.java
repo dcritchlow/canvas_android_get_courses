@@ -8,9 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.sql.SQLException;
 
-/**
- * Created by dcritchlow on 5/30/15.
- */
 public class DatabaseConnector {
 
     private static final String DATABASE_NAME = "UserCourses";
@@ -99,7 +96,7 @@ public class DatabaseConnector {
                     "course_start TEXT, course_end TEXT);";
 
             db.execSQL(createQuery);
-
+//            // Test Data setup
 //            ContentValues testData1 = new ContentValues();
 //            testData1.put(ID, "1");
 //            testData1.put(NAME, "Awesome New Course");

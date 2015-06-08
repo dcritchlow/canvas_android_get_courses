@@ -15,42 +15,19 @@ public class MainActivity extends AppCompatActivity
     public static final String ROW_ID = "row_id";
     private FragmentTransaction transaction;
     private CourseListFragment courseListFragment;
-    private boolean tabletInterface;
-//    View rightPane = findViewById(R.id.rightPaneContainer);
+    private boolean twoPaneLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tabletInterface = findViewById(R.id.rightPaneContainer) != null;
+        twoPaneLayout = findViewById(R.id.rightPaneContainer) != null;
 
         if(savedInstanceState != null){
-//            getFragmentManager().popBackStack();
             return;
-//            if(findViewById(R.id.fragmentContainer) == null){
-//                getFragmentManager().popBackStack();
-//            }
         }
-
-//        Log.d("test","Fragment Container " + findViewById(R.id.fragmentContainer).toString());
-//        if (findViewById(R.id.fragmentContainer) != null){
-//            if(tabletInterface){
-//                getFragmentManager().popBackStack();
-//                return;
-//            }
-//            getFragmentManager().popBackStack();
         getCourseListFragment();
-//        }
-//        if(findViewById(R.id.courseListFragment) != null){
-////            getFragmentManager().popBackStack();
-//            courseListFragment = CourseListFragment.newInstance();
-//            transaction = getFragmentManager().beginTransaction();
-//            transaction.add(R.id.courseListFragment, courseListFragment);
-//            transaction.addToBackStack(null);
-//            transaction.commit();
-//        }
-
     }
 
     private CourseListFragment getCourseListFragment() {
@@ -61,37 +38,9 @@ public class MainActivity extends AppCompatActivity
         return courseListFragment;
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-////        //noinspection SimplifiableIfStatement
-////        if (id == R.id.action_import) {
-////            return true;
-////        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @Override
     public void onCourseSelected(long rowID) {
-//        if (findViewById(R.id.fragmentContainer) != null) { // phone
-//            displayCourse(rowID, R.id.fragmentContainer);
-//        }
-//        else { // tablet
-////            getFragmentManager().popBackStack();
-//            displayCourse(rowID, R.id.rightPaneContainer);
-//        }
-        if(tabletInterface){
+        if(twoPaneLayout){
             displayCourse(rowID, R.id.rightPaneContainer);
         }
         else
@@ -102,26 +51,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onAddEditCompleted(long rowID) {
-//        getFragmentManager().popBackStack();
-
-//        // Tablet
-//        if(findViewById(R.id.fragmentContainer) == null){
-//            getFragmentManager().popBackStack();
-//            courseListFragment.updateContactList();
-//            displayCourse(rowID, R.id.rightPaneContainer);
-//        }
-//        getFragmentManager().popBackStack();
-        if(tabletInterface){
+        if(twoPaneLayout){
             CourseListFragment cf = (CourseListFragment) getFragmentManager().findFragmentById(R.id.fragmentContainer);
             cf.updateContactList();
             displayCourse(rowID, R.id.rightPaneContainer);
+        } else {
+            getFragmentManager().popBackStack();
         }
-
-
-//        else
-//        {
-//
-//        }
     }
 
     @Override
@@ -136,11 +72,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCourseDeleted() {
 
-        if(tabletInterface){ // tablet
-//            if(courseListFragment == null){
-//                courseListFragment = getCourseListFragment();
-//            }
-//            courseListFragment.updateContactList();
+        if(twoPaneLayout){
             CourseListFragment cf = (CourseListFragment) getFragmentManager().findFragmentById(R.id.fragmentContainer);
             cf.updateContactList();
         }
@@ -149,14 +81,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onEditCourse(Bundle arguments) {
-//        if(findViewById(R.id.fragmentContainer) != null){
-//            displayAddEditFragment(R.id.fragmentContainer, arguments); // phone
-//        }
-//        else {
-//            displayAddEditFragment(R.id.rightPaneContainer, arguments); // Tablet layout
-//        }
-
-        if(tabletInterface){
+        if(twoPaneLayout){
             displayAddEditFragment(R.id.rightPaneContainer, arguments);
         }
         else
@@ -167,10 +92,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onAddCourse() {
-        if(tabletInterface){
+        if(twoPaneLayout){
             displayAddEditFragment(R.id.rightPaneContainer, null);
         }
-        else { // tablet
+        else {
             displayAddEditFragment(R.id.fragmentContainer, null);
         }
     }
@@ -186,14 +111,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListLongClick(long rowID) {
-//        if (findViewById(R.id.fragmentContainer) != null) { // phone
-//            showAssignments(rowID, R.id.fragmentContainer);
-//        }
-//        else { // tablet
-//            showAssignments(rowID, R.id.rightPaneContainer);
-//        }
-
-        if(tabletInterface){
+        if(twoPaneLayout){
             showAssignments(rowID, R.id.rightPaneContainer);
         }
         else
@@ -215,11 +133,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume(){
         super.onResume();
-//        Log.d("test", "CourseListFragment " + courseListFragment);
-//        if(courseListFragment == null){
-//            courseListFragment = (CourseListFragment)
-//                    getFragmentManager().findFragmentById(R.id.courseListFragment);
-//        }
     }
 
     @Override
