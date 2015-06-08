@@ -23,4 +23,6 @@
     <string name="end_at_hint">Ending Date e.g. 12/20/2015</string>
     <string name="save_course">Save Course</string>
     <string name="menuitem_import">Import</string>
+    <string name="no_assignments">No Assignments</string>
+    <string name="due">Due:</string>
 </resources>
