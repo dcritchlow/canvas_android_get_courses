@@ -30,7 +30,6 @@ import java.sql.SQLException;
  */
 public class DetailsFragment extends Fragment {
 
-//    private static final String ROW_ID = "row_id";
     private static final String ID = "id";
     private static final String NAME = "name";
     private static final String COURSE_CODE = "course_code";
@@ -175,12 +174,6 @@ public class DetailsFragment extends Fragment {
         }
     };
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(long rowID, int viewID) {
-        if (mListener != null) {
-            mListener.displayCourse(rowID, viewID);
-        }
-    }
 
     @Override
     public void onAttach(Activity activity) {

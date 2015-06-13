@@ -160,6 +160,13 @@ public class AddEditFragment extends Fragment {
     }
 
     @Override
+    public void onPause()
+    {
+        super.onPause();
+        getFragmentManager().popBackStack();
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {

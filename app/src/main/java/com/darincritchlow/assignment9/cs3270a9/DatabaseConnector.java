@@ -8,9 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.sql.SQLException;
 
-/**
- * Created by dcritchlow on 5/30/15.
- */
 public class DatabaseConnector {
 
     private static final String DATABASE_NAME = "UserCourses";
@@ -77,10 +74,28 @@ public class DatabaseConnector {
             COURSES, null, DB_ID + id, null, null, null, null);
     }
 
+    public Cursor getOneCourseWithCourseId(Long id) {
+        return database.query(
+                COURSES, null, ID + "=" + id, null, null, null, null);
+    }
+
     public void deleteCourse(Long id) throws SQLException {
         open();
         database.delete(COURSES, DB_ID + id, null);
         close();
+    }
+
+    public boolean checkIfCourseExists(Long id) throws SQLException {
+        open();
+        Cursor cursor = getOneCourseWithCourseId(id);
+        if(cursor.getCount() > 0) {
+            cursor.close();
+            close();
+            return true;
+        }
+        cursor.close();
+        close();
+        return false;
     }
 
     private class DatabaseOpenHelper extends SQLiteOpenHelper{

@@ -99,7 +99,7 @@ public class CourseListFragment extends ListFragment {
     private AdapterView.OnItemLongClickListener viewAssignmentsListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//            Toast.makeText(getActivity(), "Course id " + id + " was clicked", Toast.LENGTH_LONG).show();
+            getFragmentManager().popBackStack();
             mListener.onListLongClick(id);
             return true;
         }
@@ -224,7 +224,15 @@ public class CourseListFragment extends ListFragment {
             try{
                 Course[] courses = jsonParseCourse(result);
                 for(Course course: courses){
-                    databaseConnector.insertCourse(course.id, course.name, course.course_code, course.start_at, course.end_at);
+                    boolean exists = databaseConnector.checkIfCourseExists(Long.parseLong(course.id));
+                    if(!exists) {
+                        databaseConnector.insertCourse(
+                                course.id,
+                                course.name,
+                                course.course_code,
+                                course.start_at,
+                                course.end_at);
+                    }
                 }
                 updateContactList();
             }

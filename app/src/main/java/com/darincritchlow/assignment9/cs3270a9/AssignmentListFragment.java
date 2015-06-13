@@ -101,6 +101,12 @@ public class AssignmentListFragment extends ListFragment {
         showAssignments(rowID);
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        getFragmentManager().popBackStack();
+    }
+
     public void showAssignments(long rowID) {
         new GetCourseID().execute(rowID);
     }
@@ -143,7 +149,7 @@ public class AssignmentListFragment extends ListFragment {
             Log.d("test", "In AsyncTask GetCanvasAssignments");
 
             try {
-                URL url = new URL("https://weber.instructure.com/api/v1/courses/"+params[0]+"/assignments");
+                URL url = new URL("https://weber.instructure.com/api/v1/courses/"+params[0]+"/assignments?per_page=50");
                 HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setRequestProperty("Authorization", "Bearer " + AUTH_TOKEN);
