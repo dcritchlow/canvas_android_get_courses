@@ -188,4 +188,11 @@ public class AddEditFragment extends Fragment {
         public void onAddEditCompleted(long rowID);
     }
 
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        getFragmentManager().popBackStack();
+    }
+
 }

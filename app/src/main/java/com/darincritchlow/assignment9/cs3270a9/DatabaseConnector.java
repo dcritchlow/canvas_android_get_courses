@@ -114,7 +114,7 @@ public class DatabaseConnector {
                     "course_start TEXT, course_end TEXT);";
 
             db.execSQL(createQuery);
-
+//            // Test Data setup
 //            ContentValues testData1 = new ContentValues();
 //            testData1.put(ID, "1");
 //            testData1.put(NAME, "Awesome New Course");
