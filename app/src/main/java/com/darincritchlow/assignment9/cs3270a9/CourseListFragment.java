@@ -39,10 +39,8 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class CourseListFragment extends ListFragment {
 
-    private ListView courseListView;
     private CursorAdapter courseAdapter;
     private String rowID;
-    private String AUTH_TOKEN = Authorization.AUTH_TOKEN;
     private CourseListFragmentListener mListener;
 
     /**
@@ -74,7 +72,7 @@ public class CourseListFragment extends ListFragment {
         setRetainInstance(true);
         setHasOptionsMenu(true);
         setEmptyText(getResources().getString(R.string.no_courses));
-        courseListView = getListView();
+        ListView courseListView = getListView();
         courseListView.setOnItemClickListener(viewCourseListener);
         courseListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         courseListView.setOnItemLongClickListener(viewAssignmentsListener);
@@ -87,7 +85,7 @@ public class CourseListFragment extends ListFragment {
 
 
 
-    private OnItemClickListener viewCourseListener = new OnItemClickListener(){
+    private final OnItemClickListener viewCourseListener = new OnItemClickListener(){
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -95,7 +93,7 @@ public class CourseListFragment extends ListFragment {
         }
     };
 
-    private AdapterView.OnItemLongClickListener viewAssignmentsListener = new AdapterView.OnItemLongClickListener() {
+    private final AdapterView.OnItemLongClickListener viewAssignmentsListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 //            getFragmentManager().popBackStack();
@@ -169,7 +167,7 @@ public class CourseListFragment extends ListFragment {
 
     private class GetCoursesTask extends AsyncTask<Object, Object, Cursor> {
 
-        DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
+        final DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
         @Override
         protected Cursor doInBackground(Object... params) {
             try {
@@ -200,6 +198,7 @@ public class CourseListFragment extends ListFragment {
                 URL url = new URL("https://weber.instructure.com/api/v1/courses");
                 HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
+                String AUTH_TOKEN = Authorization.AUTH_TOKEN;
                 conn.setRequestProperty("Authorization", "Bearer " + AUTH_TOKEN);
                 conn.connect();
                 int status = conn.getResponseCode();

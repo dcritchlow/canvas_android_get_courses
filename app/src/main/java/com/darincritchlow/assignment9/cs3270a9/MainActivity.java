@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity
 
     public static final String ROW_ID = "row_id";
     private FragmentTransaction transaction;
-    private CourseListFragment courseListFragment;
     private boolean twoPaneLayout;
 
     @Override
@@ -31,12 +30,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private CourseListFragment getCourseListFragment() {
-        courseListFragment = CourseListFragment.newInstance();
+    private void getCourseListFragment() {
+        CourseListFragment courseListFragment = CourseListFragment.newInstance();
         transaction = getFragmentManager().beginTransaction();
         transaction.add(R.id.fragmentContainer, courseListFragment);
         transaction.commit();
-        return courseListFragment;
     }
 
     @Override

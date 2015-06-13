@@ -20,7 +20,7 @@ public class DatabaseConnector {
     private static final String DB_ID = "_id=";
 
     private SQLiteDatabase database;
-    private DatabaseOpenHelper databaseOpenHelper;
+    private final DatabaseOpenHelper databaseOpenHelper;
 
     public DatabaseConnector(Context context){
         databaseOpenHelper = new DatabaseOpenHelper(context, DATABASE_NAME, null, 1);
@@ -74,7 +74,7 @@ public class DatabaseConnector {
             COURSES, null, DB_ID + id, null, null, null, null);
     }
 
-    public Cursor getOneCourseWithCourseId(Long id) {
+    private Cursor getOneCourseWithCourseId(Long id) {
         return database.query(
                 COURSES, null, ID + "=" + id, null, null, null, null);
     }

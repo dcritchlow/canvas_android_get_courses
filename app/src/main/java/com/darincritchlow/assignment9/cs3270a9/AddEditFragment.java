@@ -96,7 +96,7 @@ public class AddEditFragment extends Fragment {
         return addEditFragment;
     }
 
-    private OnClickListener saveContactButtonClicked = new OnClickListener(){
+    private final OnClickListener saveContactButtonClicked = new OnClickListener(){
         @Override
         public void onClick(View v) {
             if(idEditText.getText().toString().trim().length() != 0){

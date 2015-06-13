@@ -140,7 +140,7 @@ public class DetailsFragment extends Fragment {
         confirmDelete.show(getFragmentManager(), "confirm delete");
     }
 
-    private DialogFragment confirmDelete = new DialogFragment(){
+    private final DialogFragment confirmDelete = new DialogFragment(){
         @Override
         public Dialog onCreateDialog(Bundle bundle){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -200,7 +200,7 @@ public class DetailsFragment extends Fragment {
 
     private class LoadCourseTask extends AsyncTask<Long, Object, Cursor> {
 
-        DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
+        final DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
 
         @Override
         protected Cursor doInBackground(Long... params) {

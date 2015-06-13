@@ -36,12 +36,9 @@ import javax.net.ssl.HttpsURLConnection;
 public class AssignmentListFragment extends ListFragment {
 
     private AssignmentListFragmentListener mListener;
-    private ArrayAdapter<Assignment> assignmentAdapter;
     private long rowID = -1;
-    private String AUTH_TOKEN = Authorization.AUTH_TOKEN;
     private static final String ID = "id";
-    Assignment[] assignments = {};
-    private List<Assignment> assignmentItems;
+    private Assignment[] assignments = {};
 
 
     public AssignmentListFragment() {
@@ -107,7 +104,7 @@ public class AssignmentListFragment extends ListFragment {
         getFragmentManager().popBackStack();
     }
 
-    public void showAssignments(long rowID) {
+    private void showAssignments(long rowID) {
         new GetCourseID().execute(rowID);
     }
 
@@ -117,7 +114,7 @@ public class AssignmentListFragment extends ListFragment {
 
     private class GetCourseID extends AsyncTask<Long, Object, Cursor> {
 
-        DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
+        final DatabaseConnector databaseConnector = new DatabaseConnector(getActivity());
 
         @Override
         protected Cursor doInBackground(Long... params) {
@@ -152,6 +149,7 @@ public class AssignmentListFragment extends ListFragment {
                 URL url = new URL("https://weber.instructure.com/api/v1/courses/"+params[0]+"/assignments?per_page=50");
                 HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
+                String AUTH_TOKEN = Authorization.AUTH_TOKEN;
                 conn.setRequestProperty("Authorization", "Bearer " + AUTH_TOKEN);
                 conn.connect();
                 int status = conn.getResponseCode();
@@ -169,7 +167,7 @@ public class AssignmentListFragment extends ListFragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            assignmentItems = new ArrayList<>();
+            List<Assignment> assignmentItems = new ArrayList<>();
 
             try{
                 assignments = jsonParseAssignment(result);
@@ -177,7 +175,7 @@ public class AssignmentListFragment extends ListFragment {
                     assignmentItems.add(a);
                     Log.d("test", a.name + a.due_at);
                 }
-                assignmentAdapter = new AssignmentAdapter(getActivity(), assignmentItems);
+                ArrayAdapter<Assignment> assignmentAdapter = new AssignmentAdapter(getActivity(), assignmentItems);
                 setListAdapter(assignmentAdapter);
             }
             catch (Exception e){
