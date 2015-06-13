@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCourseSelected(long rowID) {
         if(twoPaneLayout){
+            getFragmentManager().popBackStack();
             displayCourse(rowID, R.id.rightPaneContainer);
         }
         else
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void displayCourse(long rowID, int viewID) {
-        DetailsFragment detailsFragment = (DetailsFragment.newInstance(rowID));
+        DetailsFragment detailsFragment = DetailsFragment.newInstance(rowID);
         transaction = getFragmentManager().beginTransaction();
         transaction.replace(viewID, detailsFragment);
         transaction.addToBackStack(null);
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void showAssignments(long rowID, int viewID) {
-        AssignmentListFragment assignmentListFragment = new AssignmentListFragment().newInstance(rowID);
+        AssignmentListFragment assignmentListFragment = AssignmentListFragment.newInstance(rowID);
         transaction = getFragmentManager().beginTransaction();
         transaction.replace(viewID, assignmentListFragment);
         transaction.addToBackStack(null);

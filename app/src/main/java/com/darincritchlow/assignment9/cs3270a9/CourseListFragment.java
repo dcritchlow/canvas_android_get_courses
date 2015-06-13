@@ -41,7 +41,6 @@ public class CourseListFragment extends ListFragment {
 
     private ListView courseListView;
     private CursorAdapter courseAdapter;
-//    private ArrayAdapter<String> courseArrayAdapter;
     private String rowID;
     private String AUTH_TOKEN = Authorization.AUTH_TOKEN;
     private CourseListFragmentListener mListener;
@@ -99,7 +98,7 @@ public class CourseListFragment extends ListFragment {
     private AdapterView.OnItemLongClickListener viewAssignmentsListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            getFragmentManager().popBackStack();
+//            getFragmentManager().popBackStack();
             mListener.onListLongClick(id);
             return true;
         }
